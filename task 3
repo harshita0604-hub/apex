@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Quiz</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    background: #007BFF;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background: #0056b3;
+  }
+
+  .hidden { display: none; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container {
+      padding: 15px;
+    }
+    button {
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fun Quiz!</h1>
+    <div id="quiz">
+      <div id="question"></div>
+      <div id="answers"></div>
+      <button id="nextBtn">Next</button>
+    </div>
+    <div id="result" class="hidden">
+      <h2>Your Score: <span id="score"></span>/3</h2>
+      <h3>Here's a joke for you:</h3>
+      <p id="joke"></p>
+      <button id="restartBtn">Play Again</button>
+    </div>
+  </div>
+
+<script>
+  const quizData = [
+    { question: "What is 2 + 2?", answers: ["3", "4", "5"], correct: 1 },
+    { question: "Which color is the sky?", answers: ["Blue", "Green", "Red"], correct: 0 },
+    { question: "Which is a programming language?", answers: ["HTML", "Python", "CSS"], correct: 1 }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+
+  const questionEl = document.getElementById("question");
+  const answersEl = document.getElementById("answers");
+  const nextBtn = document.getElementById("nextBtn");
+  const resultEl = document.getElementById("result");
+  const quizEl = document.getElementById("quiz");
+  const scoreEl = document.getElementById("score");
+  const jokeEl = document.getElementById("joke");
+  const restartBtn = document.getElementById("restartBtn");
+
+  function loadQuestion() {
+    const q = quizData[currentQuestion];
+    questionEl.innerText = q.question;
+    answersEl.innerHTML = "";
+    q.answers.forEach((ans, index) => {
+      const btn = document.createElement("button");
+      btn.innerText = ans;
+      btn.onclick = () => selectAnswer(index);
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(index) {
+    if(index === quizData[currentQuestion].correct) score++;
+    currentQuestion++;
+    if(currentQuestion < quizData.length) loadQuestion();
+    else showResult();
+  }
+
+  function showResult() {
+    quizEl.classList.add("hidden");
+    resultEl.classList.remove("hidden");
+    scoreEl.innerText = score;
+    fetchJoke();
+  }
+
+  function fetchJoke() {
+    fetch('https://official-joke-api.appspot.com/random_joke')
+      .then(res => res.json())
+      .then(data => {
+        jokeEl.innerText = data.setup + " - " + data.punchline;
+      });
+  }
+
+  nextBtn.onclick = () => alert("Please select an answer!");
+  restartBtn.onclick = () => {
+    currentQuestion = 0;
+    score = 0;
+    resultEl.classList.add("hidden");
+    quizEl.classList.remove("hidden");
+    loadQuestion();
+  }
+
+  // Initialize
+  loadQuestion();
+</script>
+</body>
+</html>
