@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Capstone E-Commerce App</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+  body{line-height:1.6;background:#f4f4f4;color:#333;}
+  a{text-decoration:none;color:inherit;}
+
+  nav{background:#007bff;color:white;padding:1rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;}
+  nav .logo{font-weight:bold;font-size:1.3rem;}
+  nav .nav-links{display:flex;align-items:center;gap:1rem;}
+  nav .nav-links a{color:white;}
+  nav .cart-btn{background:white;color:#007bff;border:none;padding:0.3rem 0.6rem;border-radius:3px;cursor:pointer;}
+  nav .nav-toggle{display:none;cursor:pointer;font-size:1.8rem;}
+  @media(max-width:768px){
+    nav{flex-direction:column;align-items:flex-start;}
+    nav .nav-links{display:none;width:100%;flex-direction:column;}
+    nav .nav-links.show{display:flex;}
+    nav .nav-links a{padding:0.5rem 0;}
+  }
+
+  .hero{background:url('https://images.unsplash.com/photo-1581093588401-77a024c7b9e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTI1M3wwfDF8c2VhcmNofDF8fHNob3BwaW5nJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE2ODY3NTA4NTg&ixlib=rb-4.0.3&q=80&w=1080') center/cover no-repeat;color:white;height:400px;display:flex;justify-content:center;align-items:center;text-align:center;}
+  .hero h1{font-size:2.5rem;background:rgba(0,0,0,0.5);padding:1rem;border-radius:5px;}
+
+  .container{max-width:1200px;margin:auto;padding:1rem;}
+  h2{margin-bottom:1rem;color:#007bff;}
+
+  .filters{margin-bottom:1rem;}
+  .filters button{padding:0.5rem 1rem;margin-right:0.5rem;border:none;border-radius:3px;cursor:pointer;background:#007bff;color:white;transition:0.2s;}
+  .filters button:hover, .filters button.active{background:#0056b3;}
+
+  .cards{display:flex;flex-wrap:wrap;gap:1rem;}
+  .card{background:white;flex:1 1 calc(25% - 1rem);padding:1rem;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.1);transition:transform 0.3s;cursor:pointer;}
+  .card:hover{transform:translateY(-5px);}
+  .card img{width:100%;border-radius:5px;margin-bottom:0.5rem;}
+  .card h3{margin-bottom:0.5rem;}
+  .card p{margin-bottom:0.5rem;}
+  .card button{background:#007bff;color:white;border:none;padding:0.5rem 1rem;cursor:pointer;border-radius:3px;transition:0.2s;}
+  .card button:hover{background:#0056b3;}
+
+  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;padding:1rem;overflow:auto;}
+  .modal-content{background:white;padding:1rem;border-radius:8px;max-width:500px;width:100%;position:relative;}
+  .modal-content img{width:100%;border-radius:5px;margin-bottom:1rem;}
+  .close{position:absolute;top:0.5rem;right:0.5rem;font-size:1.5rem;cursor:pointer;}
+
+  form{background:white;padding:1rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+  form input, form textarea{width:100%;padding:0.5rem;margin:0.5rem 0;border:1px solid #ccc;border-radius:4px;}
+  form button{background:#007bff;color:white;border:none;padding:0.7rem 1rem;cursor:pointer;border-radius:3px;}
+  form button:hover{background:#0056b3;}
+
+  footer{background:#333;color:white;text-align:center;padding:1rem;margin-top:2rem;}
+  @media(max-width:768px){.cards{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">CapstoneShop</div>
+  <div class="nav-toggle">&#9776;</div>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <button class="cart-btn" id="viewCart">Cart (0)</button>
+  </div>
+</nav>
+
+<section class="hero" id="home">
+  <h1>Shop Our Premium Products</h1>
+</section>
+
+<section class="container" id="products">
+  <h2>Our Products</h2>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="electronics">Electronics</button>
+    <button class="filter-btn" data-filter="fashion">Fashion</button>
+  </div>
+  <div class="cards">
+    <div class="card" data-category="electronics" data-price="1500" data-name="Wireless Headphones" data-desc="High-quality wireless headphones with noise cancellation.">
+      <img src="https://images.unsplash.com/photo-1585386959984-a41552261a29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" loading="lazy" alt="Wireless Headphones">
+      <h3>Wireless Headphones</h3>
+      <p>Price: ₹1500</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="card" data-category="fashion" data-price="1200" data-name="Leather Wallet" data-desc="Premium leather wallet with multiple compartments.">
+      <img src="https://images.unsplash.com/photo-1596464716126-1ff3f5b8db63?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" loading="lazy" alt="Leather Wallet">
+      <h3>Leather Wallet</h3>
+      <p>Price: ₹1200</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="card" data-category="electronics" data-price="3000" data-name="Smartwatch" data-desc="Latest smartwatch with fitness tracking and notifications.">
+      <img src="https://images.unsplash.com/photo-1612831455540-6cfefb7a6f7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" loading="lazy" alt="Smartwatch">
+      <h3>Smartwatch</h3>
+      <p>Price: ₹3000</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="card" data-category="fashion" data-price="800" data-name="Sneakers" data-desc="Stylish sneakers for daily wear and comfort.">
+      <img src="https://images.unsplash.com/photo-1600180758895-5e056c1b0e85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" loading="lazy" alt="Sneakers">
+      <h3>Sneakers</h3>
+      <p>Price: ₹800</p>
+      <button>Add to Cart</button>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <img id="modalImg" src="" alt="Product">
+    <h3 id="modalTitle"></h3>
+    <p id="modalPrice"></p>
+    <p id="modalDesc"></p>
+  </div>
+</div>
+
+<div class="modal" id="cartModal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <p>Total: ₹<span id="cartTotal">0</span></p>
+    <button id="checkoutBtn">Checkout</button>
+  </div>
+</div>
+
+<section class="container" id="about">
+  <h2>About Us</h2>
+  <p>This professional capstone e-commerce app demonstrates filtering, modals, persistent cart, responsive design, and modern UI with real product images and names.</p>
+</section>
+
+<section class="container" id="contact">
+  <h2>Contact Us</h2>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="message" rows="4" placeholder="Your Message" required></textarea>
+    <button type="submit">Send</button>
+  </form>
+</section>
+
+<footer>&copy; 2026 Capstone E-Commerce App. All Rights Reserved.</footer>
+
+<script>
+const toggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+toggle.addEventListener('click', ()=>navLinks.classList.toggle('show'));
+
+document.querySelectorAll('nav a').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+  });
+});
+
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const message=document.getElementById('message').value.trim();
+  if(name && email && message){ alert('Thank you, '+name+'!'); this.reset(); }
+  else{ alert('Please fill all fields.'); }
+});
+
+const filterBtns=document.querySelectorAll('.filter-btn');
+const cards=document.querySelectorAll('.card');
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter=btn.getAttribute('data-filter');
+    cards.forEach(card=>{
+      if(filter==='all'||card.getAttribute('data-category')===filter){ card.style.display='block'; }
+      else{ card.style.display='none'; }
+    });
+  });
+});
+
+const productModal=document.getElementById('productModal');
+const modalImg=document.getElementById('modalImg');
+const modalTitle=document.getElementById('modalTitle');
+const modalPrice=document.getElementById('modalPrice');
+const modalDesc=document.getElementById('modalDesc');
+const modalClose=productModal.querySelector('.close');
+
+cards.forEach(card=>{
+  card.addEventListener('click', (e)=>{
+    if(e.target.tagName==='BUTTON') return;
+    productModal.style.display='flex';
+    modalImg.src=card.querySelector('img').src;
+    modalTitle.textContent=card.getAttribute('data-name');
+    modalPrice.textContent='Price: ₹'+card.getAttribute('data-price');
+    modalDesc.textContent=card.getAttribute('data-desc');
+  });
+});
+
+modalClose.addEventListener('click', ()=>productModal.style.display='none');
+window.addEventListener('click', e=>{ if(e.target===productModal) productModal.style.display='none'; });
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const cartBtn=document.getElementById('viewCart');
+const cartModal=document.getElementById('cartModal');
+const closeBtn=cartModal.querySelector('.close');
+const cartItems=document.getElementById('cartItems');
+const cartTotal=document.getElementById('cartTotal');
+
+function updateCart(){ 
+  cartItems.innerHTML='';
+  let total=0;
+  cart.forEach(item=>{
+    const div=document.createElement('div');
+    div.classList.add('cart-item');
+    div.textContent=item.name + ' - ₹'+item.price;
+    cartItems.appendChild(div);
+    total+=parseInt(item.price);
+  });
+  cartTotal.textContent=total;
+  cartBtn.textContent=`Cart (${cart.length})`;
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+updateCart();
+
+document.querySelectorAll('.card button').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    e.stopPropagation();
+    const card=btn.parentElement;
+    const name=card.getAttribute('data-name');
+    const price=card.getAttribute('data-price');
+    cart.push({name, price});
+    updateCart();
+    alert(name+' added to cart!');
+  });
+});
+
+cartBtn.addEventListener('click', ()=>cartModal.style.display='flex');
+closeBtn.addEventListener('click', ()=>cartModal.style.display='none');
+window.addEventListener('click', e=>{ if(e.target===cartModal) cartModal.style.display='none'; });
+
+document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+  if(cart.length>0){ alert('Checkout successful! Total: ₹'+cart.reduce((a,b)=>a+parseInt(b.price),0)); cart=[]; updateCart(); cartModal.style.display='none'; }
+  else{ alert('Cart is empty!'); }
+});
+</script>
+
+</body>
+</html>
